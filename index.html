@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <style type="text/css">
+            .ui_dialog{width:440px;background:#fff;border:2px solid #394459}
+            .ui_dialog label{display: inline;}
+            .ui_dialog_body{margin:10px 8px}
+            .schedule_edit{overflow:hidden;zoom:1}
+            .ui-schedule-sel-weektime{padding:2px}
+            .ui-schedule-sel-weektime input,.ui-schedule-sel-weektime label{vertical-align:middle}
+            .ui-schedule-sel-wtop{color:#37a;text-decoration:underline;cursor:pointer}
+            .ui-schedule-sel-wtbody{padding:7px}
+            .ui-schedule-sel-wtbodyline{height:18px;padding:2px 0;border:1px solid #fff}
+            .ui-schedule-sel-wtbodylinehover{border:1px solid #e6e6e6;background:#fff}
+            .ui-schedule-sel-wtday{width:90px;float:left;line-height:18px;padding-left:2px}
+            .ui-schedule-sel-wtday label{margin-left:2px}
+            .ui-schedule-sel-wttimeseg{float:left;width:130px}
+            .ui-schedule-sel-wttimehead{width:18px;height:17px;line-height:16px;margin-right:2px;background:url(http://tuiguang-s3.bdstatic.com/nirvana/asset/resource/img/78490fdb8055b4a2.png) -394px -106px;float:left;font-size:11px;cursor:pointer;overflow:hidden}
+            .ui-schedule-sel-wttimehead-active{background:red;background:url(http://tuiguang-s3.bdstatic.com/nirvana/asset/resource/img/78490fdb8055b4a2.png) -410px -106px}
+            .ui-schedule-sel-wttime{width:16px;height:16px;line-height:16px;margin-right:2px;background:#e6e6e6;color:#e6e6e6;float:left;font-size:11px;cursor:pointer;text-align:center;border:1px solid #e6e6e6;-moz-border-radius:2px;border-radius:2px}
+            .ui-schedule-sel-wktimehover{background:#fff!important;border:1px solid #a2d688!important;color:#390!important}
+            .ui-schedule-sel-wktimesel{background:#390;color:#fff;border:1px solid #390}
+            .ui_dialog_foot:after {content: "\0020";display: block;height: 0;visibility: hidden;clear: both;}
+            .ui_dialog_foot{clear:both;margin-bottom:10px;margin-left: 317px;}
+            .ui_button,.ui_button_label{background-image:url(http://tuiguang-s3.bdstatic.com/nirvana/asset/resource/img/78490fdb8055b4a2.png);display:inline-block;float:left}
+            .ui_button{padding-right:5px;margin-left:5px;text-align:center;cursor:pointer;position:relative;zoom:1}
+            .skin_empha_22{background-position:right -297px;height:22px}
+            .ui_button_label{position:relative;overflow:hidden;margin-left:-5px;padding:0 5px 0 10px;font-size:12px;text-decoration:none;color:#000}
+            .ui_button_press{background-position:right -253px}
+            .ui_button_label{background-position:left -209px;height:22px;line-height:22px}
+            .skin_empha_22_label{background-position:left -297px;height:22px;line-height:22px}
+        </style>
+        <div id="ctrldialogplanScheduleDlg" class="ui_dialog" style="width: 660px; left: 620px; z-index: 201; top: 180px;">
+            <div class="ui_dialog_body" id="ctrldialogplanScheduleDlgbody">
+                <div class="schedule_edit">
+                    <div class="ui-schedule-sel-weektime">
+                        <div class="ui-schedule-sel-wthead">
+                            <span class="ui-schedule-sel-wtop" id="all_selected">全部时间</span>
+                            &nbsp;|&nbsp;
+                            <span class="ui-schedule-sel-wtop">工作日</span>
+                            &nbsp;|&nbsp;
+                            <span class="ui-schedule-sel-wtop">周末</span>                  
+                            &nbsp;|&nbsp;
+                            <span class="ui-schedule-sel-wtop" id="none_selected">重置</span>
+                        </div>
+                        <div class="ui-schedule-sel-wtbody" id="ctrlschedulescheduleEditorWeektimeBody">
+                            <div class="ui-schedule-sel-wtbodyline" id="ctrlschedulescheduleEditorWeektimeHead">
+                                <div class="ui-schedule-sel-wtday">&nbsp;</div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttimehead"    time="0" id="timeHead0">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="1" id="timeHead1">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="2" id="timeHead2">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="3" id="timeHead3">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="4" id="timeHead4">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="5" id="timeHead5">&nbsp;</div>                                
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttimehead"    time="6" id="timeHead6">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="7" id="timeHead7">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="8" id="timeHead8">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="9" id="timeHead9">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="10" id="timeHead10">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="11" id="timeHead11">&nbsp;</div></div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttimehead"    time="12" id="timeHead12">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="13" id="timeHead13">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="14" id="timeHead14">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="15" id="timeHead15">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="16" id="timeHead16">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="17" id="timeHead17">&nbsp;</div></div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttimehead"    time="18" id="timeHead18">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="19" id="timeHead19">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="20" id="timeHead20">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="21" id="timeHead21">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="22" id="timeHead22">&nbsp;</div>
+                                    <div class="ui-schedule-sel-wttimehead"    time="23" id="timeHead23">&nbsp;</div>
+                                </div>
+                            </div>
+                            <div class="ui-schedule-sel-wtbodyline" id="timeDayLine0">
+                                <div class="ui-schedule-sel-wtday">
+                                    <input type="checkbox" id="timeDayCheckbox0" value="0" >
+                                    <label for="timeDayCheckbox0">星期一</label></div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="0" day="0"  id="time-0-0">0</div>
+                                    <div class="ui-schedule-sel-wttime"    time="1" day="0"  id="time-0-1">1</div>
+                                    <div class="ui-schedule-sel-wttime"    time="2" day="0"  id="time-0-2">2</div>
+                                    <div class="ui-schedule-sel-wttime"    time="3" day="0"  id="time-0-3">3</div>
+                                    <div class="ui-schedule-sel-wttime"    time="4" day="0"  id="time-0-4">4</div>
+                                    <div class="ui-schedule-sel-wttime"    time="5" day="0"  id="time-0-5">5</div></div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="6" day="0"  id="time-0-6">6</div>
+                                    <div class="ui-schedule-sel-wttime"    time="7" day="0"  id="time-0-7">7</div>
+                                    <div class="ui-schedule-sel-wttime"    time="8" day="0"  id="time-0-8">8</div>
+                                    <div class="ui-schedule-sel-wttime"    time="9" day="0"  id="time-0-9">9</div>
+                                    <div class="ui-schedule-sel-wttime"    time="10" day="0"  id="time-0-10">10</div>
+                                    <div class="ui-schedule-sel-wttime"    time="11" day="0"  id="time-0-11">11</div></div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="12" day="0"  id="time-0-12">12</div>
+                                    <div class="ui-schedule-sel-wttime"    time="13" day="0"  id="time-0-13">13</div>
+                                    <div class="ui-schedule-sel-wttime"    time="14" day="0"  id="time-0-14">14</div>
+                                    <div class="ui-schedule-sel-wttime"    time="15" day="0"  id="time-0-15">15</div>
+                                    <div class="ui-schedule-sel-wttime"    time="16" day="0"  id="time-0-16">16</div>
+                                    <div class="ui-schedule-sel-wttime"    time="17" day="0"  id="time-0-17">17</div>
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="18" day="0"  id="time-0-18">18</div>
+                                    <div class="ui-schedule-sel-wttime"    time="19" day="0"  id="time-0-19">19</div>
+                                    <div class="ui-schedule-sel-wttime"    time="20" day="0"  id="time-0-20">20</div>
+                                    <div class="ui-schedule-sel-wttime"    time="21" day="0"  id="time-0-21">21</div>
+                                    <div class="ui-schedule-sel-wttime"    time="22" day="0"  id="time-0-22">22</div>
+                                    <div class="ui-schedule-sel-wttime"    time="23" day="0"  id="time-0-23">23</div>
+                                </div>
+                            </div>
+                            <div class="ui-schedule-sel-wtbodyline" id="timeDayLine1">
+                                <div class="ui-schedule-sel-wtday">
+                                    <input type="checkbox" id="timeDayCheckbox1" value="1" >
+                                    <label for="timeDayCheckbox1">星期二</label></div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="0" day="1"  id="time-1-0">0</div>
+                                    <div class="ui-schedule-sel-wttime"    time="1" day="1"  id="time-1-1">1</div>
+                                    <div class="ui-schedule-sel-wttime"    time="2" day="1"  id="time-1-2">2</div>
+                                    <div class="ui-schedule-sel-wttime"    time="3" day="1"  id="time-1-3">3</div>
+                                    <div class="ui-schedule-sel-wttime"    time="4" day="1"  id="time-1-4">4</div>
+                                    <div class="ui-schedule-sel-wttime"    time="5" day="1"  id="time-1-5">5</div>                                
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="6" day="1"  id="time-1-6">6</div>
+                                    <div class="ui-schedule-sel-wttime"    time="7" day="1"  id="time-1-7">7</div>
+                                    <div class="ui-schedule-sel-wttime"    time="8" day="1"  id="time-1-8">8</div>
+                                    <div class="ui-schedule-sel-wttime"    time="9" day="1"  id="time-1-9">9</div>
+                                    <div class="ui-schedule-sel-wttime"    time="10" day="1"  id="time-1-10">10</div>
+                                    <div class="ui-schedule-sel-wttime"    time="11" day="1"  id="time-1-11">11</div>                                
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="12" day="1"  id="time-1-12">12</div>
+                                    <div class="ui-schedule-sel-wttime"    time="13" day="1"  id="time-1-13">13</div>
+                                    <div class="ui-schedule-sel-wttime"    time="14" day="1"  id="time-1-14">14</div>
+                                    <div class="ui-schedule-sel-wttime"    time="15" day="1"  id="time-1-15">15</div>
+                                    <div class="ui-schedule-sel-wttime"    time="16" day="1"  id="time-1-16">16</div>
+                                    <div class="ui-schedule-sel-wttime"    time="17" day="1"  id="time-1-17">17</div>                                
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="18" day="1"  id="time-1-18">18</div>
+                                    <div class="ui-schedule-sel-wttime"    time="19" day="1"  id="time-1-19">19</div>
+                                    <div class="ui-schedule-sel-wttime"    time="20" day="1"  id="time-1-20">20</div>
+                                    <div class="ui-schedule-sel-wttime"    time="21" day="1"  id="time-1-21">21</div>
+                                    <div class="ui-schedule-sel-wttime"    time="22" day="1"  id="time-1-22">22</div>
+                                    <div class="ui-schedule-sel-wttime"    time="23" day="1"  id="time-1-23">23</div>                                
+                                </div>
+                            </div>
+                            <div class="ui-schedule-sel-wtbodyline" id="timeDayLine2">
+                                <div class="ui-schedule-sel-wtday">
+                                    <input type="checkbox" id="timeDayCheckbox2" value="2" >
+                                    <label for="timeDayCheckbox2">星期三</label></div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="0" day="2"  id="time-2-0">0</div>
+                                    <div class="ui-schedule-sel-wttime"    time="1" day="2"  id="time-2-1">1</div>
+                                    <div class="ui-schedule-sel-wttime"    time="2" day="2"  id="time-2-2">2</div>
+                                    <div class="ui-schedule-sel-wttime"    time="3" day="2"  id="time-2-3">3</div>
+                                    <div class="ui-schedule-sel-wttime"    time="4" day="2"  id="time-2-4">4</div>
+                                    <div class="ui-schedule-sel-wttime"    time="5" day="2"  id="time-2-5">5</div>                               
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="6" day="2"  id="time-2-6">6</div>
+                                    <div class="ui-schedule-sel-wttime"    time="7" day="2"  id="time-2-7">7</div>
+                                    <div class="ui-schedule-sel-wttime"    time="8" day="2"  id="time-2-8">8</div>
+                                    <div class="ui-schedule-sel-wttime"    time="9" day="2"  id="time-2-9">9</div>
+                                    <div class="ui-schedule-sel-wttime"    time="10" day="2"  id="time-2-10">10</div>
+                                    <div class="ui-schedule-sel-wttime"    time="11" day="2"  id="time-2-11">11</div>                                
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="12" day="2"  id="time-2-12">12</div>
+                                    <div class="ui-schedule-sel-wttime"    time="13" day="2"  id="time-2-13">13</div>
+                                    <div class="ui-schedule-sel-wttime"    time="14" day="2"  id="time-2-14">14</div>
+                                    <div class="ui-schedule-sel-wttime"    time="15" day="2"  id="time-2-15">15</div>
+                                    <div class="ui-schedule-sel-wttime"    time="16" day="2"  id="time-2-16">16</div>
+                                    <div class="ui-schedule-sel-wttime"    time="17" day="2"  id="time-2-17">17</div>                                
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="18" day="2"  id="time-2-18">18</div>
+                                    <div class="ui-schedule-sel-wttime"    time="19" day="2"  id="time-2-19">19</div>
+                                    <div class="ui-schedule-sel-wttime"    time="20" day="2"  id="time-2-20">20</div>
+                                    <div class="ui-schedule-sel-wttime"    time="21" day="2"  id="time-2-21">21</div>
+                                    <div class="ui-schedule-sel-wttime"    time="22" day="2"  id="time-2-22">22</div>
+                                    <div class="ui-schedule-sel-wttime"    time="23" day="2"  id="time-2-23">23</div>                                
+                                </div>
+                            </div>
+                            <div class="ui-schedule-sel-wtbodyline" id="timeDayLine3">
+                                <div class="ui-schedule-sel-wtday">
+                                    <input type="checkbox" id="timeDayCheckbox3" value="3" >
+                                    <label for="timeDayCheckbox3">星期四</label></div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="0" day="3"  id="time-3-0">0</div>
+                                    <div class="ui-schedule-sel-wttime"    time="1" day="3"  id="time-3-1">1</div>
+                                    <div class="ui-schedule-sel-wttime"    time="2" day="3"  id="time-3-2">2</div>
+                                    <div class="ui-schedule-sel-wttime"    time="3" day="3"  id="time-3-3">3</div>
+                                    <div class="ui-schedule-sel-wttime"    time="4" day="3"  id="time-3-4">4</div>
+                                    <div class="ui-schedule-sel-wttime"    time="5" day="3"  id="time-3-5">5</div>                                
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="6" day="3"  id="time-3-6">6</div>
+                                    <div class="ui-schedule-sel-wttime"    time="7" day="3"  id="time-3-7">7</div>
+                                    <div class="ui-schedule-sel-wttime"    time="8" day="3"  id="time-3-8">8</div>
+                                    <div class="ui-schedule-sel-wttime"    time="9" day="3"  id="time-3-9">9</div>
+                                    <div class="ui-schedule-sel-wttime"    time="10" day="3"  id="time-3-10">10</div>
+                                    <div class="ui-schedule-sel-wttime"    time="11" day="3"  id="time-3-11">11</div>                                
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="12" day="3"  id="time-3-12">12</div>
+                                    <div class="ui-schedule-sel-wttime"    time="13" day="3"  id="time-3-13">13</div>
+                                    <div class="ui-schedule-sel-wttime"    time="14" day="3"  id="time-3-14">14</div>
+                                    <div class="ui-schedule-sel-wttime"    time="15" day="3"  id="time-3-15">15</div>
+                                    <div class="ui-schedule-sel-wttime"    time="16" day="3"  id="time-3-16">16</div>
+                                    <div class="ui-schedule-sel-wttime "    time="17" day="3"  id="time-3-17">17</div>                                
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="18" day="3"  id="time-3-18">18</div>
+                                    <div class="ui-schedule-sel-wttime"    time="19" day="3"  id="time-3-19">19</div>
+                                    <div class="ui-schedule-sel-wttime"    time="20" day="3"  id="time-3-20">20</div>
+                                    <div class="ui-schedule-sel-wttime"    time="21" day="3"  id="time-3-21">21</div>
+                                    <div class="ui-schedule-sel-wttime"    time="22" day="3"  id="time-3-22">22</div>
+                                    <div class="ui-schedule-sel-wttime"    time="23" day="3"  id="time-3-23">23</div>                                
+                                </div>
+                            </div>
+                            <div class="ui-schedule-sel-wtbodyline" id="timeDayLine4">
+                                <div class="ui-schedule-sel-wtday">
+                                    <input type="checkbox" id="timeDayCheckbox4" value="4" >
+                                    <label for="timeDayCheckbox4">星期五</label></div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="0" day="4"  id="time-4-0">0</div>
+                                    <div class="ui-schedule-sel-wttime"    time="1" day="4"  id="time-4-1">1</div>
+                                    <div class="ui-schedule-sel-wttime"    time="2" day="4"  id="time-4-2">2</div>
+                                    <div class="ui-schedule-sel-wttime"    time="3" day="4"  id="time-4-3">3</div>
+                                    <div class="ui-schedule-sel-wttime"    time="4" day="4"  id="time-4-4">4</div>
+                                    <div class="ui-schedule-sel-wttime"    time="5" day="4"  id="time-4-5">5</div>                                
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="6" day="4"  id="time-4-6">6</div>
+                                    <div class="ui-schedule-sel-wttime"    time="7" day="4"  id="time-4-7">7</div>
+                                    <div class="ui-schedule-sel-wttime"    time="8" day="4"  id="time-4-8">8</div>
+                                    <div class="ui-schedule-sel-wttime"    time="9" day="4"  id="time-4-9">9</div>
+                                    <div class="ui-schedule-sel-wttime"    time="10" day="4"  id="time-4-10">10</div>
+                                    <div class="ui-schedule-sel-wttime"    time="11" day="4"  id="time-4-11">11</div>                                
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="12" day="4"  id="time-4-12">12</div>
+                                    <div class="ui-schedule-sel-wttime"    time="13" day="4"  id="time-4-13">13</div>
+                                    <div class="ui-schedule-sel-wttime"    time="14" day="4"  id="time-4-14">14</div>
+                                    <div class="ui-schedule-sel-wttime"    time="15" day="4"  id="time-4-15">15</div>
+                                    <div class="ui-schedule-sel-wttime"    time="16" day="4"  id="time-4-16">16</div>
+                                    <div class="ui-schedule-sel-wttime"    time="17" day="4"  id="time-4-17">17</div>                                
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="18" day="4"  id="time-4-18">18</div>
+                                    <div class="ui-schedule-sel-wttime"    time="19" day="4"  id="time-4-19">19</div>
+                                    <div class="ui-schedule-sel-wttime"    time="20" day="4"  id="time-4-20">20</div>
+                                    <div class="ui-schedule-sel-wttime"    time="21" day="4"  id="time-4-21">21</div>
+                                    <div class="ui-schedule-sel-wttime"    time="22" day="4"  id="time-4-22">22</div>
+                                    <div class="ui-schedule-sel-wttime"    time="23" day="4"  id="time-4-23">23</div>                                
+                                </div>
+                            </div>
+                            <div class="ui-schedule-sel-wtbodyline" id="timeDayLine5">
+                                <div class="ui-schedule-sel-wtday">
+                                    <input type="checkbox" id="timeDayCheckbox5" value="5" >
+                                    <label for="timeDayCheckbox5">星期六</label></div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="0" day="5"  id="time-5-0">0</div>
+                                    <div class="ui-schedule-sel-wttime"    time="1" day="5"  id="time-5-1">1</div>
+                                    <div class="ui-schedule-sel-wttime"    time="2" day="5"  id="time-5-2">2</div>
+                                    <div class="ui-schedule-sel-wttime"    time="3" day="5"  id="time-5-3">3</div>
+                                    <div class="ui-schedule-sel-wttime"    time="4" day="5"  id="time-5-4">4</div>
+                                    <div class="ui-schedule-sel-wttime"    time="5" day="5"  id="time-5-5">5</div>                                
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="6" day="5"  id="time-5-6">6</div>
+                                    <div class="ui-schedule-sel-wttime"    time="7" day="5"  id="time-5-7">7</div>
+                                    <div class="ui-schedule-sel-wttime"    time="8" day="5"  id="time-5-8">8</div>
+                                    <div class="ui-schedule-sel-wttime"    time="9" day="5"  id="time-5-9">9</div>
+                                    <div class="ui-schedule-sel-wttime"    time="10" day="5"  id="time-5-10">10</div>
+                                    <div class="ui-schedule-sel-wttime"    time="11" day="5"  id="time-5-11">11</div>                                
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="12" day="5"  id="time-5-12">12</div>
+                                    <div class="ui-schedule-sel-wttime"    time="13" day="5"  id="time-5-13">13</div>
+                                    <div class="ui-schedule-sel-wttime"    time="14" day="5"  id="time-5-14">14</div>
+                                    <div class="ui-schedule-sel-wttime"    time="15" day="5"  id="time-5-15">15</div>
+                                    <div class="ui-schedule-sel-wttime"    time="16" day="5"  id="time-5-16">16</div>
+                                    <div class="ui-schedule-sel-wttime"    time="17" day="5"  id="time-5-17">17</div>                                
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="18" day="5"  id="time-5-18">18</div>
+                                    <div class="ui-schedule-sel-wttime"    time="19" day="5"  id="time-5-19">19</div>
+                                    <div class="ui-schedule-sel-wttime"    time="20" day="5"  id="time-5-20">20</div>
+                                    <div class="ui-schedule-sel-wttime"    time="21" day="5"  id="time-5-21">21</div>
+                                    <div class="ui-schedule-sel-wttime"    time="22" day="5"  id="time-5-22">22</div>
+                                    <div class="ui-schedule-sel-wttime"    time="23" day="5"  id="time-5-23">23</div>                                
+                                </div>
+                            </div>
+                            <div class="ui-schedule-sel-wtbodyline" id="timeDayLine6">
+                                <div class="ui-schedule-sel-wtday">
+                                    <input type="checkbox" id="timeDayCheckbox6" value="6" >
+                                    <label for="timeDayCheckbox6">星期日</label></div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="0" day="6"  id="time-6-0">0</div>
+                                    <div class="ui-schedule-sel-wttime"    time="1" day="6"  id="time-6-1">1</div>
+                                    <div class="ui-schedule-sel-wttime"    time="2" day="6"  id="time-6-2">2</div>
+                                    <div class="ui-schedule-sel-wttime"    time="3" day="6"  id="time-6-3">3</div>
+                                    <div class="ui-schedule-sel-wttime"    time="4" day="6"  id="time-6-4">4</div>
+                                    <div class="ui-schedule-sel-wttime"    time="5" day="6"  id="time-6-5">5</div>                                
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="6" day="6"  id="time-6-6">6</div>
+                                    <div class="ui-schedule-sel-wttime"    time="7" day="6"  id="time-6-7">7</div>
+                                    <div class="ui-schedule-sel-wttime"    time="8" day="6"  id="time-6-8">8</div>
+                                    <div class="ui-schedule-sel-wttime"    time="9" day="6"  id="time-6-9">9</div>
+                                    <div class="ui-schedule-sel-wttime"    time="10" day="6"  id="time-6-10">10</div>
+                                    <div class="ui-schedule-sel-wttime"    time="11" day="6"  id="time-6-11">11</div>                                
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="12" day="6"  id="time-6-12">12</div>
+                                    <div class="ui-schedule-sel-wttime"    time="13" day="6"  id="time-6-13">13</div>
+                                    <div class="ui-schedule-sel-wttime"    time="14" day="6"  id="time-6-14">14</div>
+                                    <div class="ui-schedule-sel-wttime"    time="15" day="6"  id="time-6-15">15</div>
+                                    <div class="ui-schedule-sel-wttime"    time="16" day="6"  id="time-6-16">16</div>
+                                    <div class="ui-schedule-sel-wttime"    time="17" day="6"  id="time-6-17">17</div>                                
+                                </div>
+                                <div class="ui-schedule-sel-wttimeseg">
+                                    <div class="ui-schedule-sel-wttime"    time="18" day="6"  id="time-6-18">18</div>
+                                    <div class="ui-schedule-sel-wttime"    time="19" day="6"  id="time-6-19">19</div>
+                                    <div class="ui-schedule-sel-wttime"    time="20" day="6"  id="time-6-20">20</div>
+                                    <div class="ui-schedule-sel-wttime"    time="21" day="6"  id="time-6-21">21</div>
+                                    <div class="ui-schedule-sel-wttime"    time="22" day="6"  id="time-6-22">22</div>
+                                    <div class="ui-schedule-sel-wttime"    time="23" day="6"  id="time-6-23">23</div>                                
+                                </div>
+                            </div>                       
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui_dialog_foot" id="ctrldialogplanScheduleDlgfoot">
+                <div id="ctrlbuttonDefaultDialogOkButtonhvyqtfx0"  class="ui_button skin_empha_22">
+                    <a href="javascript:void(0)" id="form_sumbit" class="ui_button_label skin_empha_22_label">确定</a>
+                </div>
+            </div>        
+        </div>
+        <script>
+            function check_all_selected() {
+                $("div[id^=timeHead]").each(function() {
+                    var time = $(this).attr('time');
+                    var time_total = 0;
+                    $("div[id^=time-][time=" + time + "]").each(function() {
+                        if ($(this).hasClass("ui-schedule-sel-wktimesel")) {
+                            time_total += 1;
+                        }
+                    })
+                    if (time_total == 7) {
+                        $(this).addClass("ui-schedule-sel-wttimehead-active");
+                    } else {
+                        $(this).removeClass("ui-schedule-sel-wttimehead-active");
+                    }
+                })
+                $("input[id^=timeDayCheckbox]").each(function() {
+                    var value = $(this).val();
+                    var value_total = 0;
+                    $("div[id^=time-][day=" + value + "]").each(function() {
+                        if ($(this).hasClass("ui-schedule-sel-wktimesel")) {
+                            value_total += 1;
+                        }
+                    })
+                    if (value_total == 24) {
+                        $(this).attr("checked", true);
+                    } else {
+                        $(this).attr("checked", false);
+                    }
+                })
+            }
+            $(function() {
+                $("div[id^=time-]").hover(
+                        function() {
+                            $(this).addClass("ui-schedule-sel-wktimehover");
+                        },
+                        function() {
+                            $(this).removeClass("ui-schedule-sel-wktimehover");
+                        }
+                )
+                $("div[id^=time-]").click(function() {
+                    if ($(this).hasClass("ui-schedule-sel-wktimesel")) {
+                        $(this).removeClass("ui-schedule-sel-wktimesel");
+                    } else {
+                        $(this).addClass("ui-schedule-sel-wktimesel");
+                    }
+                    check_all_selected();
+                })
+                $("div[id^=timeHead]").hover(
+                        function() {
+                            var time = $(this).attr('time');
+                            $("div[id^=timeDayLine]").find("div[time=" + time + "]").addClass("ui-schedule-sel-wktimehover");
+                        },
+                        function() {
+                            var time = $(this).attr('time');
+                            $("div[id^=timeDayLine]").find("div[time=" + time + "]").removeClass("ui-schedule-sel-wktimehover");
+
+                        }
+                )
+                $("div[id^=timeHead]").click(function() {
+                    if ($(this).hasClass("ui-schedule-sel-wttimehead-active")) {
+                        $(this).removeClass("ui-schedule-sel-wttimehead-active");
+                        var time = $(this).attr('time');
+                        $("div[id^=timeDayLine]").find("div[time=" + time + "]").removeClass("ui-schedule-sel-wktimesel");
+                    } else {
+                        $(this).addClass("ui-schedule-sel-wttimehead-active");
+                        var time = $(this).attr('time');
+                        $("div[id^=timeDayLine]").find("div[time=" + time + "]").addClass("ui-schedule-sel-wktimesel");
+                    }
+                    check_all_selected();
+                })
+                $("input[id^=timeDayCheckbox]").change(function() {
+                    var value = $(this).val();
+                    if ($(this).is(':checked')) {
+                        $("div[id^=timeDayLine]").find("div[day=" + value + "]").addClass("ui-schedule-sel-wktimesel");
+                    } else {
+                        $("div[id^=timeDayLine]").find("div[day=" + value + "]").removeClass("ui-schedule-sel-wktimesel");
+                    }
+                    check_all_selected();
+                })
+                $("#all_selected").click(function() {
+                    $("div[id^=time-]").addClass("ui-schedule-sel-wktimesel");
+                    check_all_selected();
+                })
+                $("#none_selected").click(function() {
+                    $("div[id^=time-]").removeClass("ui-schedule-sel-wktimesel");
+                    check_all_selected();
+                })
+                $("div[id^=timeDayLine]").hover(
+                        function() {
+                            $(this).addClass("ui-schedule-sel-wtbodylinehover");
+                        },
+                        function() {
+                            $(this).removeClass("ui-schedule-sel-wtbodylinehover");
+                        }
+                )
+
+                $("#form_sumbit").click(function() {
+                    var day_arr = new Array();
+                    $("div[id^=time-]").each(function() {
+                        if ($(this).hasClass("ui-schedule-sel-wktimesel")) {
+                            var day = Number($(this).attr('day')) + 1;
+                            var time = $(this).attr('time');
+                            if (time.length == 1) {
+                                time = '0' + time;
+                            }
+                            var day_str = Number(day + time);
+                            if (day_arr.length == 0 || day_arr[day_arr.length - 1][1] != day_str) {
+                                var this_arr = [day_str, day_str + 1];
+                                day_arr.push(this_arr);
+                            } else {
+                                var this_arr = [day_arr[day_arr.length - 1][0], day_str + 1];
+                                day_arr[day_arr.length - 1] = this_arr;
+                            }
+                        }
+                    })
+                    day_arr = JSON.stringify(day_arr);
+                    alert(day_arr);
+                })
+
+            })
+        </script>
+    </body>
+</html>
